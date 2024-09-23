@@ -9,6 +9,7 @@
 
 fn main() {
     // Booleans (`bool`)
+    
 
     let is_morning = true;
     if is_morning {

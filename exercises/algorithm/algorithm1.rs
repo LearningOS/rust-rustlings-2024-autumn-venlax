@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -45,6 +45,7 @@ impl<T> LinkedList<T> {
     }
 
     pub fn add(&mut self, obj: T) {
+        
         let mut node = Box::new(Node::new(obj));
         node.next = None;
         let node_ptr = Some(unsafe { NonNull::new_unchecked(Box::into_raw(node)) });
@@ -69,14 +70,45 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
+    pub fn merge(mut list_a: LinkedList<T>, mut list_b: LinkedList<T>) -> Self
+    where
+        T: PartialOrd + Copy,
+    {
+        
+        let mut len_a = 0;
+        let mut len_b = 0;
+        
+		let mut res = Self {
             length: 0,
             start: None,
             end: None,
+        };
+
+        
+        while len_a < list_a.length && len_b < list_b.length {
+            let a = list_a.get(len_a as i32).unwrap();
+            let b = list_b.get(len_b as i32).unwrap();
+            if a < b {
+                res.add(*a);
+                len_a += 1;
+            } else {
+                res.add(*b);
+                len_b += 1;
+            }
         }
+
+        while len_a < list_a.length {
+            let a = list_a.get(len_a as i32).unwrap();
+            res.add(*a);
+            len_a += 1;
+        }
+
+        while len_b < list_b.length {
+            let b = list_b.get(len_b as i32).unwrap();
+            res.add(*b);
+            len_b += 1;
+        }
+        res
 	}
 }
 
